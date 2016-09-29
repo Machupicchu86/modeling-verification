@@ -69,13 +69,13 @@ sudo -s -- <<EOF
   chmod a+x /usr/local/bin/wercker
 EOF
 rm atom-amd64.deb
-hererocks --local --patch --lua=^ --luarocks=^ ${HOME}/.local
-luarocks install luasec
-luarocks install ansicolors
-luarocks install argparse
-luarocks install busted
-luarocks install cluacov
-luarocks install luacheck
+hererocks --patch --lua=^ --luarocks=^ ${HOME}/.local
+luarocks install --local luasec
+luarocks install --local ansicolors
+luarocks install --local argparse
+luarocks install --local busted
+luarocks install --local cluacov
+luarocks install --local luacheck
 apm install atom-format-lua
 apm install language-lua
 apm install linter-luacheck
