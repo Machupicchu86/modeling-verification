@@ -70,7 +70,7 @@ sudo -s -- <<EOF
 EOF
 rm atom-amd64.deb
 hererocks --patch --lua=^ --luarocks=^ ${HOME}/.local
-luarocks install --local luasec
+luarocks install --local luasec       OPENSSL_LIBDIR="/usr/lib/x86_64-linux-gnu/"
 luarocks install --local ansicolors
 luarocks install --local argparse
 luarocks install --local busted
