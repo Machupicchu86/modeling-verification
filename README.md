@@ -61,7 +61,7 @@ curl -L https://github.com/atom/atom/releases/download/v1.10.2/atom-amd64.deb   
 curl -L https://s3.amazonaws.com/downloads.wercker.com/cli/stable/linux_amd64/wercker -o wercker
 sudo -s -- <<EOF
   apt-get update
-  apt-get install libreadline-dev libssl-dev curl docker.io git python-pip
+  apt-get install --yes libreadline-dev libssl-dev curl docker.io git python-pip
   usermod -aG docker "${SUDO_USER}"
   pip install hererocks
   dpkg -i atom-amd64.deb
