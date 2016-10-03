@@ -88,7 +88,8 @@ apm install linter-luacheck
 Launch `atom` in the virtual machine, and configure the `linte-luacheck` plugin.
 Open the [Command Palette](http://flight-manual.atom.io/getting-started/sections/atom-basics/),
 open "View installed packages", and "luacheck" settings.
-Configure it by providing the path to the `luacheck` command: `<your home>/.local/bin/luacheck`. 
+Configure it by providing the path to `luacheck`.
+You can obtain the path by copying exactly the result of command: `which luacheck` (in your terminal).
 
 The environment contains:
 * [Git](https://git-scm.com/docs/gittutorial):
