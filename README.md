@@ -54,7 +54,7 @@ algorithms on Petri nets, by implementing them:
   We will work in a virtual machine.
 * Create a new virtual machine, using [Ubuntu amd64](http://www.ubuntu.com/download/desktop),
   and install `ssh` in it (if needed).
-* Run the following script to install all required dependencies:
+* Run the following scripts to install all required dependencies:
 
 ```sh
 set -e
@@ -69,6 +69,9 @@ sudo -s -- <<"EOF"
   mv wercker /usr/local/bin/
   chmod a+x /usr/local/bin/wercker
 EOF
+```
+
+```sh
 rm atom-amd64.deb
 hererocks --patch --lua=^ --luarocks=^ ${HOME}/.local
 luarocks install luasec       OPENSSL_LIBDIR="/usr/lib/x86_64-linux-gnu/"
