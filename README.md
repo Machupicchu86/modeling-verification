@@ -71,16 +71,21 @@ sudo -s -- <<"EOF"
 EOF
 rm atom-amd64.deb
 hererocks --patch --lua=^ --luarocks=^ ${HOME}/.local
-luarocks install --local luasec       OPENSSL_LIBDIR="/usr/lib/x86_64-linux-gnu/"
-luarocks install --local ansicolors
-luarocks install --local argparse
-luarocks install --local busted
-luarocks install --local cluacov
-luarocks install --local luacheck
+luarocks install luasec       OPENSSL_LIBDIR="/usr/lib/x86_64-linux-gnu/"
+luarocks install ansicolors
+luarocks install argparse
+luarocks install busted
+luarocks install cluacov
+luarocks install luacheck
 apm install atom-format-lua
 apm install language-lua
 apm install linter-luacheck
 ```
+
+Launch `atom` in the virtual machine, and configure the `linte-luacheck` plugin.
+Open the [Command Palette](http://flight-manual.atom.io/getting-started/sections/atom-basics/),
+open "View installed packages", and "luacheck" settings.
+Configure it by providing the path to the `luacheck` command: `<your home>/.local/bin/luacheck`. 
 
 The environment contains:
 * [Git](https://git-scm.com/docs/gittutorial):
