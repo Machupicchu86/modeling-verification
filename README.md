@@ -52,7 +52,7 @@ algorithms on Petri nets, by implementing them:
   Create an account if you do not have one already
 * Install [VirtualBox](https://www.virtualbox.org)
   We will work in a virtual machine.
-* Create a new virtual machine, using [Ubuntu](http://www.ubuntu.com/download/desktop),
+* Create a new virtual machine, using [Ubuntu amd64](http://www.ubuntu.com/download/desktop),
   and install `ssh` in it (if needed).
 * Run the following script to install all required dependencies:
 
