@@ -1,20 +1,23 @@
 #! /usr/bin/env bash
 
 set -e
-set -x
+
+where=${1:-"${HOME}/.local"}
 
 # System-specific part:
 source /etc/lsb-release
 case "${DISTRIB_ID}/${DISTRIB_RELEASE}/$(uname -m)" in
   "Ubuntu/16.04/x86_64")
-    sudo -s -- <<"EOF"
+    sudo -s -H -- <<"EOF"
+      set -e
       apt-get update
-      apt-get install --yes libreadline-dev libssl-dev curl docker.io git nodejs python-pip
+      apt-get install --yes libreadline-dev libssl-dev curl unzip docker.io git nodejs python-pip
       usermod -aG docker "${SUDO_USER}"
       pip install --upgrade pip
       pip install hererocks
       curl -L https://github.com/atom/atom/releases/download/v1.10.2/atom-amd64.deb -o atom-amd64.deb
       dpkg -i atom-amd64.deb
+      apt-get -f install --yes
       rm   -f atom-amd64.deb
       curl -L https://s3.amazonaws.com/downloads.wercker.com/cli/stable/linux_amd64/wercker -o wercker
       mv wercker /usr/local/bin/
@@ -28,7 +31,7 @@ EOF
 esac
 
 # System-independent part:
-hererocks --patch --lua=^ --luarocks=^ ${HOME}/.local
+hererocks --patch --lua=^ --luarocks=^ "${where}"
 luarocks install luasec
 luarocks install ansicolors
 luarocks install argparse
@@ -43,11 +46,11 @@ apm install linter
 apm install linter-luacheck
 apm install cson
 ln -s "/usr/bin/nodejs" \
-      "${HOME}/.local/bin/node"
+      "${where}/bin/node"
 ln -s "${HOME}/.atom/packages/cson/node_modules/cson/bin/cson2json" \
-      "${HOME}/.local/bin/cson2json"
+      "${where}/bin/cson2json"
 ln -s "${HOME}/.atom/packages/cson/node_modules/cson/bin/json2cson" \
-      "${HOME}/.local/bin/json2cson"
+      "${where}/bin/json2cson"
 if [ -f "${HOME}/.atom/config.cson" ]; then
   cson2json "${HOME}/.atom/config.cson" > "${HOME}/.atom/config.json"
 else

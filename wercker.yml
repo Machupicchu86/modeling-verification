@@ -1,7 +1,12 @@
-box: ubuntu/latest
+box: ubuntu:latest
 build:
   steps:
     - script:
+        name: "install sudo"
+        code: |
+          apt-get update  --yes
+          apt-get install --yes sudo
+    - script:
         name: "install"
         code: |
-          ./bin/install
+          ./bin/install /usr/local
