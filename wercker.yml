@@ -1,25 +1,7 @@
-box: cosyverif/lua-environments
+box: ubuntu/latest
 build:
   steps:
     - script:
-        name: "version"
-        code: |
-          export dir=/lua/lua53-all
-    - script:
         name: "install"
         code: |
-          "${dir}/bin/luarocks" make rockspec/modelingverification-env-master-1.rockspec
-          "${dir}/bin/luarocks" make rockspec/modelingverification-master-1.rockspec
-    - script:
-        name: "check"
-        code: |
-          "${dir}/bin/luacheck" src/
-    - script:
-        name: "test"
-        code: |
-          "${dir}/bin/busted" src/
-    - script:
-        name: "coverage"
-        code: |
-          "${dir}/bin/luacov"
-          ./bin/colorize
+          ./bin/install
