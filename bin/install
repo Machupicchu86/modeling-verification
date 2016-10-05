@@ -11,6 +11,7 @@ case "${DISTRIB_ID}/${DISTRIB_RELEASE}/$(uname -m)" in
     sudo -s -H -- <<"EOF"
       set -e
       apt-get update
+      apt-get clean
       apt-get install --yes libreadline-dev libssl-dev curl unzip docker.io git nodejs python-pip
       usermod -aG docker "${SUDO_USER}"
       pip install --upgrade pip
@@ -21,6 +22,7 @@ case "${DISTRIB_ID}/${DISTRIB_RELEASE}/$(uname -m)" in
       curl -L https://s3.amazonaws.com/downloads.wercker.com/cli/stable/linux_amd64/wercker -o wercker
       mv wercker /usr/local/bin/
       chmod a+x /usr/local/bin/wercker
+      apt-get clean
 EOF
     export OPENSSL_LIBDIR="/usr/lib/x86_64-linux-gnu/"
     ;;
