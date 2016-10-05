@@ -47,9 +47,9 @@ The environment you installed contains:
   You can always run all the tests on your code with the following command,
   from the root of your project (where the `wercker.yml` file is located):
 
-```sh
-$ wercker build
-```
+  ```sh
+  $ wercker build
+  ```
 
 ## Evaluation
 
