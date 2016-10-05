@@ -1,0 +1,80 @@
+#! /usr/bin/env bash
+
+set -e
+set -x
+
+# System-specific part:
+source /etc/lsb-release
+case "${DISTRIB_ID}/${DISTRIB_RELEASE}/$(uname -m)" in
+  "Ubuntu/16.04/x86_64")
+    sudo -s -- <<"EOF"
+      apt-get update
+      apt-get install --yes libreadline-dev libssl-dev curl docker.io git nodejs python-pip
+      usermod -aG docker "${SUDO_USER}"
+      pip install --upgrade pip
+      pip install hererocks
+      curl -L https://github.com/atom/atom/releases/download/v1.10.2/atom-amd64.deb -o atom-amd64.deb
+      dpkg -i atom-amd64.deb
+      rm   -f atom-amd64.deb
+      curl -L https://s3.amazonaws.com/downloads.wercker.com/cli/stable/linux_amd64/wercker -o wercker
+      mv wercker /usr/local/bin/
+      chmod a+x /usr/local/bin/wercker
+EOF
+    export OPENSSL_LIBDIR="/usr/lib/x86_64-linux-gnu/"
+    ;;
+  *)
+    echo "Distro ${DISTRIB_ID} is not supported."
+    ;;
+esac
+
+# System-independent part:
+hererocks --patch --lua=^ --luarocks=^ ${HOME}/.local
+luarocks install luasec
+luarocks install ansicolors
+luarocks install argparse
+luarocks install busted
+luarocks install cluacov
+luarocks install luacheck
+luarocks install lua-cjson
+luarocks install uuid
+apm install atom-format-lua
+apm install language-lua
+apm install linter
+apm install linter-luacheck
+apm install cson
+ln -s "/usr/bin/nodejs" \
+      "${HOME}/.local/bin/node"
+ln -s "${HOME}/.atom/packages/cson/node_modules/cson/bin/cson2json" \
+      "${HOME}/.local/bin/cson2json"
+ln -s "${HOME}/.atom/packages/cson/node_modules/cson/bin/json2cson" \
+      "${HOME}/.local/bin/json2cson"
+if [ -f "${HOME}/.atom/config.cson" ]; then
+  cson2json "${HOME}/.atom/config.cson" > "${HOME}/.atom/config.json"
+else
+  echo "{}" > "${HOME}/.atom/config.json"
+fi
+lua -e '
+  local json = require "cjson"
+  local uuid = require "uuid"
+  data = {
+    ["*"] = {
+      ["welcome"] = {
+        showOnStartup = true,
+      },
+      ["exception-reporting"] = {
+        userId = uuid (),
+      },
+      ["linter-luacheck"] = {
+        executable = os.getenv "HOME" .. "/.local/bin/luacheck",
+        globals    = {
+          "--std=lua53+busted"
+        },
+      },
+    },
+  }
+  file = io.open (os.getenv "HOME" .. "/.atom/config.json", "w")
+  file:write (json.encode (data))
+  file:close ()
+'
+json2cson "${HOME}/.atom/config.json" > "${HOME}/.atom/config.cson"
+rm "${HOME}/.atom/config.json"

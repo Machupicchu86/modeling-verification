@@ -13,67 +13,13 @@ Please install the following environment:
   Create an account if you do not have one already
 * Install [VirtualBox](https://www.virtualbox.org)
   We will work in a virtual machine.
-* Create a new virtual machine, using [Ubuntu amd64](http://www.ubuntu.com/download/desktop),
-  and install `ssh` in it (if needed).
+* Create a new virtual machine,
+  using [Ubuntu amd64](http://www.ubuntu.com/download/desktop).
 * Run the following script to install dependencies:
 
-```sh
-set -e
-curl -L https://github.com/atom/atom/releases/download/v1.10.2/atom-amd64.deb         -o atom-amd64.deb
-curl -L https://s3.amazonaws.com/downloads.wercker.com/cli/stable/linux_amd64/wercker -o wercker
-sudo -s -- <<"EOF"
-  apt-get update
-  apt-get install --yes libreadline-dev libssl-dev curl docker.io git nodejs python-pip
-  usermod -aG docker "${SUDO_USER}"
-  pip install --upgrade pip
-  pip install hererocks
-  dpkg -i atom-amd64.deb
-  mv wercker /usr/local/bin/
-  chmod a+x /usr/local/bin/wercker
-  rm atom-amd64.deb
-EOF
-```
-* Run the following script to install Lua and its environment:
-```sh
-hererocks --patch --lua=^ --luarocks=^ ${HOME}/.local
-luarocks install luasec OPENSSL_LIBDIR="/usr/lib/x86_64-linux-gnu/"
-luarocks install ansicolors
-luarocks install argparse
-luarocks install busted
-luarocks install cluacov
-luarocks install luacheck
-luarocks install lua-cjson
-apm install atom-format-lua
-apm install language-lua
-apm install linter
-apm install linter-luacheck
-apm install cson
-atom & sleep 10
-ln -s "/usr/bin/nodejs" \
-      "${HOME}/.local/bin/node"
-ln -s "${HOME}/.atom/packages/cson/node_modules/cson/bin/cson2json" \
-      "${HOME}/.local/bin/cson2json"
-ln -s "${HOME}/.atom/packages/cson/node_modules/cson/bin/json2cson" \
-      "${HOME}/.local/bin/json2cson"
-cson2json "${HOME}/.atom/config.cson" > "${HOME}/.atom/config.json"
-lua -e '
-  local json = require "cjson"
-  local file = io.open (os.getenv "HOME" .. "/.atom/config.json", "r")
-  local data = json.decode (file:read "*all")
-  file:close ()
-  data ["*"] ["linter-luacheck"] = {
-    executable = os.getenv "HOME" .. "/.local/bin/luacheck",
-    globals    = {
-      "--std=lua53+busted"
-    },
-  }
-  file = io.open (os.getenv "HOME" .. "/.atom/config.json", "w")
-  file:write (json.encode (data))
-  file:close ()
-'
-json2cson "${HOME}/.atom/config.json" > "${HOME}/.atom/config.cson"
-rm "${HOME}/.atom/config.json"
-```
+  ```sh
+    curl -s https://raw.githubusercontent.com/cui-unige/modeling-verification/master/bin/install | bash /dev/stdin
+  ```
 
 The environment you installed contains:
 * [Git](https://git-scm.com/docs/gittutorial):
