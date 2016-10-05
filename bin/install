@@ -16,8 +16,7 @@ case "${DISTRIB_ID}/${DISTRIB_RELEASE}/$(uname -m)" in
       pip install --upgrade pip
       pip install hererocks
       curl -L https://github.com/atom/atom/releases/download/v1.10.2/atom-amd64.deb -o atom-amd64.deb
-      dpkg -i atom-amd64.deb
-      apt-get -f install --yes
+      dpkg -i atom-amd64.deb || apt-get -f install --yes
       rm   -f atom-amd64.deb
       curl -L https://s3.amazonaws.com/downloads.wercker.com/cli/stable/linux_amd64/wercker -o wercker
       mv wercker /usr/local/bin/
